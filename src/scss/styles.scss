@@ -1,0 +1,11 @@
+@import "bootstrap/scss/bootstrap";
+
+.wrapper {
+    display: flex;
+}
+
+.wrapper-col {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0;
+}
