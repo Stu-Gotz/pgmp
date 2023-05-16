@@ -1,43 +1,65 @@
 <script setup>
-
+import CardDisplay from '../components/CardDisplay.vue' 
+import TeamForm from '../components/TeamForm.vue'
+import LowerDisplay from '../components/LowerDisplay.vue'
+import Footer from '../components/Footer.vue'
 </script>
 
 <template>
-  <!-- left half -->
-  <div class="wrapper-col">
-    <form @submit.prevent="submit">
-      <!-- <div class="col mb-4"> -->
-      <div class="form-floating">
-        <textarea class="form-control h-100" placeholder="Please import a team from
-          Showdown." name="teamPasteArea"></textarea>
-        <label for="teamPasteArea">Paste your team</label>
-      </div>
-
-      <!-- <div class="grid"> -->
-      <div class="g-col-4 g-start-2">
-        <button @click="" type="button" class="btn btn-success form-control">Submit</button>
-
-      </div>
-      <div class="g-col-4 g-start-8">
-        <button @click="" type="button" class="btn btn-danger form-control">Clear</button>
-
-      </div>
-      <!-- </div> -->
-      <!-- </div> -->
-    </form>
-  </div>
-  <!-- Right Half -->
-  <div class="wrapper-col">
-    display half
+  <div class="content mb-0 p-0">
+    <!-- left half -->
+    <TeamForm />
+    <!-- Right Half -->
+    <div class="d-flex flex-column align-items-center justify-content-center">
+      <CardDisplay />
+      <LowerDisplay />
+    </div>
+    <!-- Footer -->
+    <Footer />
   </div>
 </template>
 
-<style>
-/* @media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-  }
-} */
+<style lang="scss">
+.content {
+  display: grid;
+  grid-template-columns: 30% auto;
+  grid-template-rows: 1fr auto;
+  column-gap: 20px;
+  /* background-color: #6b769a; */
+  /* height: 100%; */
+  flex: 1;
+}
+
+
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.front {
+  padding: 1rem 0;
+}
+
+
+
+.card-images {
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin: 4px;
+  height: 35%;
+}
+
+.ev-list {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+.evs {
+  display: inline-block;
+  margin-left: 2px;
+}
 </style>

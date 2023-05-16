@@ -1,0 +1,17 @@
+Week 1:
+[x] Wireframe and create layout
+    [x] Create Wireframe with tool (used Whimsical) 11/5
+    [x] Make page layout for display page 15/5
+    [x] break out areas into smaller components 15/5
+    [ ] take page components and break down
+
+Week 2:
+[ ] Forms and interactivity
+    [ ] Can paste team in (use test.txt) and parse
+    [ ] Parses into card displays
+    [ ] Style in general
+    [ ] Typing colour matching
+    [ ] Card flip on click
+
+Week 3: Database structuring
+[ ]

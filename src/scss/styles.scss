@@ -1,11 +1,23 @@
 @import "bootstrap/scss/bootstrap";
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css");
 
-.wrapper {
+.front {
+    height: 100%;
     display: flex;
+    align-items: center;
+
 }
 
-.wrapper-col {
+.cards {
     display: flex;
-    flex-direction: column;
-    flex: 1 0;
+    justify-content: space-evenly;
+    height: 100%;
+    align-items: center;
+}
+
+ul, 
+li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
