@@ -5,7 +5,7 @@ import { RouterLink } from 'vue-router';
 <template>
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-      <a href="#" class="navbar-brand">Navbar</a>
+      <RouterLink to="/main" class="navbar-brand">Main Page</RouterLink>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -13,7 +13,7 @@ import { RouterLink } from 'vue-router';
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#"><i class="bi bi-house-door"></i></a>
+            <RouterLink class="nav-link active" to="/"><i class="bi bi-house-door"></i></RouterLink>
           </li>
           <li class="nav-item">
             <RouterLink class="nav-link active" to="/login">Account</RouterLink>
@@ -34,7 +34,6 @@ import { RouterLink } from 'vue-router';
               </li>
             </ul>
           </li>
-
         </ul>
       </div>
     </div>

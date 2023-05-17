@@ -8,8 +8,12 @@ import Navigation from './components/Navigation.vue';
   <RouterView />
 </template>
 
-<style scoped>
-
+<style lang="scss">
+:root {
+  --small-bp: 1400px;
+  --xs-bp: 1100px;
+  --mobile-bp: 500px;
+}
 
 @media (min-width: 1024px) {
   header {
@@ -27,5 +31,12 @@ import Navigation from './components/Navigation.vue';
     place-items: flex-start;
     flex-wrap: wrap;
   }
+}
+
+ul,
+li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 </style>
