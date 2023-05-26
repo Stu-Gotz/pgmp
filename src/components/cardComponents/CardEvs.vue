@@ -1,22 +1,22 @@
+<script setup>
+defineProps(['evs']);
+</script>
+
 <template>
-  <ul class="card-text grid text-success text-center mb-2">
-      <li class="evs col-sm-4 p-0 m-0">
-        HP: 100
-      </li>
-      <li class="evs col-sm-4 p-0 m-0">
-        ATK: 100
-      </li>
-      <li class="evs col-sm-4 p-0 m-0">
-        DEF: 100
-      </li>
-      <li class="evs col-sm-4 p-0 m-0">
-        SATK: 100
-      </li>
-      <li class="evs col-sm-4 p-0 m-0">
-        SDEF: 100
-      </li>
-      <li class="evs col-sm-4 p-0 m-0">
-        SPE: 100
+  <ul class="card-text d-flex flex-wrap justify-content-center text-success text-center my-2">
+      <li 
+      v-for="(ev, idx) in evs"
+      :key="idx"
+      class="evs col-4 p-0 m-0">
+        <strong>{{ idx.toUpperCase() }}</strong> {{ ev }}
       </li>
     </ul>
 </template>
+
+<style lang="scss">
+
+.evs {
+  display: inline-block;
+}
+  
+</style>

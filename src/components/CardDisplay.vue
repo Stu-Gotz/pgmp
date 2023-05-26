@@ -1,5 +1,10 @@
 <script setup>
 import CardFront from './Cards/CardFront.vue';
+import WelcomeCards from './Cards/WelcomeCards.vue'
+import { useTeamStore } from '../stores/store';
+
+const store = useTeamStore();
+
 </script>
 
 
@@ -7,10 +12,11 @@ import CardFront from './Cards/CardFront.vue';
   <!-- Container for the top half of the page -->
   <div class="h-50 w-100">
     <!-- Create the row to hold the cards within the top half -->
-    <div class="cards grid ">
+    <div class="cards">
       <!-- This begins each card element. A goal in the project is to turn this into smaller components -->
-      <!-- Begins the Front -->
-      <CardFront v-for="i in 6" />
+      <!-- This is technically bad practice, I will optimize later if time is available. -->
+      <WelcomeCards v-if="!store.team"  />
+      <CardFront v-else v-for="i in store.team" :pokemon="i"/>
     </div>
   </div>
   <!-- End Top Half Page -->
@@ -23,16 +29,15 @@ import CardFront from './Cards/CardFront.vue';
   height: 100%;
   align-items: center;
   font-size: 12px;
+  flex-wrap: nowrap;
+  border: 4px outset #555;
+  border-radius: 10px;
+  padding: 2px;
 
-  // @media(max-width: var(--small-bp)) {
-
-  //   height: 50%;
-  // }
-
-  // @media(max-width: var(--xs-bp)) {
-  //   flex-wrap: wrap;
-  //   height: 50%;
-  // }
-
+  @media(max-width: 1400px) {
+    flex-wrap: wrap;
+  }
 }
+
+
 </style>

@@ -19,13 +19,13 @@ import Footer from '../components/Footer.vue'
   </div>
 </template>
 
-<style lang="scss">
+<style>
 .content {
   display: grid;
   grid-template-columns: 30% auto;
   grid-template-rows: 1fr auto;
   column-gap: 20px;
-  /* background-color: #6b769a; */
+  background: var(--color-background);
   /* height: 100%; */
   flex: 1;
 }
@@ -45,12 +45,6 @@ import Footer from '../components/Footer.vue'
 
 
 
-.card-images {
-  background-size: contain;
-  background-repeat: no-repeat;
-  margin: 4px;
-  height: 35%;
-}
 
 .ev-list {
   display: inline-block;
@@ -58,8 +52,5 @@ import Footer from '../components/Footer.vue'
   margin: 0;
 }
 
-.evs {
-  display: inline-block;
-  margin-left: 2px;
-}
+
 </style>
