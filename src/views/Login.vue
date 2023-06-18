@@ -8,7 +8,7 @@ function login() {
 <template>
   <div class="container d-flex flex-column align-items-center justify-content-center h-50">
     <h4>some image here</h4>
-    <form @submit="login">
+    <form @submit.prevent="login">
       <div class="input-group mb-3">
         <label for="username" class="input-group-text" id="basic-addon1">Username: </label>
         <input name="username" type="text" class="form-control" placeholder="Username" aria-label="Username"
