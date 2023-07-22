@@ -2,13 +2,9 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 
 import Pokedex from 'pokedex-promise-v2';
-// const options = {
-//   protocol: 'https',
-//   hostName: 'localhost:443',
-//   versionPath: '/api/v2/',
-//   cacheLimit: 100 * 1000, // 100s
-//   timeout: 5 * 1000 // 5s
-// }
+class Team {
+  
+}
 
 export const useTeamStore = defineStore('teamStore', {
   state: () => ({

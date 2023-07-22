@@ -7,16 +7,8 @@ defineProps(['evs']);
       <li 
       v-for="(ev, idx) in evs"
       :key="idx"
-      class="evs col-4 p-0 m-0">
+      class="d-inline-block col-4 p-0 m-0">
         <strong>{{ idx.toUpperCase() }}</strong> {{ ev }}
       </li>
     </ul>
 </template>
-
-<style lang="scss">
-
-.evs {
-  display: inline-block;
-}
-  
-</style>

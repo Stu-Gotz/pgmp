@@ -2,9 +2,7 @@
 import CardFront from './Cards/CardFront.vue';
 import WelcomeCards from './Cards/WelcomeCards.vue'
 import { useTeamStore } from '../stores/store';
-
 const store = useTeamStore();
-
 </script>
 
 

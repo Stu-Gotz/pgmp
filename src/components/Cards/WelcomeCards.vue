@@ -1,3 +1,6 @@
+<script setup>
+</script>
+
 <template>
   <div class="welcome d-flex justify-content-evenly w-75">
       <img class="welcome-image" id="letter1" src="../icons/unown-h.png" alt="unown-h">

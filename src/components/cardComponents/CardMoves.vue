@@ -4,7 +4,7 @@ defineProps(['moves'])
 
 <template>
   <ul class="card-text row p-0 m-0 w-100 moves">
-    <li class="move col-sm-6 p-0 m-0"
+    <li class="move col-sm-6 p-0 m-0 text-center bold"
     v-for="(move, index) in moves"
     :key="index"
     :class="`${move.type}`">

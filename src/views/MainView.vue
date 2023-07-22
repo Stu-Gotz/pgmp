@@ -26,31 +26,7 @@ import Footer from '../components/Footer.vue'
   grid-template-rows: 1fr auto;
   column-gap: 20px;
   background: var(--color-background);
-  /* height: 100%; */
   flex: 1;
 }
-
-
-
-.card-body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.front {
-  padding: 1rem 0;
-}
-
-
-
-
-.ev-list {
-  display: inline-block;
-  padding: 0;
-  margin: 0;
-}
-
 
 </style>

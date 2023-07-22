@@ -1,4 +1,4 @@
-<script setup>
+<script async setup>
 import CardTop from '../cardComponents/CardTop.vue';
 import CardFrontImages from '../cardComponents/CardFrontImages.vue';
 import CardEvs from '../cardComponents/CardEvs.vue';
@@ -66,5 +66,16 @@ function typeBackground(type) {
     flex-basis: calc(100%/3);
     height: 50%;
   }
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.front {
+  padding: 1rem 0;
 }
 </style>
