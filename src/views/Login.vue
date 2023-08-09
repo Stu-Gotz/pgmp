@@ -1,4 +1,5 @@
 <script setup>
+import {RouterLink} from 'vue-router';
 // TODO:
 // Login Function (username pw validation)
 // Error Handling (send message, and clear form.)
@@ -12,14 +13,14 @@ function login() {
     <h4>some image here</h4>
     <form @submit.prevent="login">
       <div class="input-group mb-3">
-        <label for="username" class="input-group-text" id="username">Username: </label>
+        <span class="input-group-text">Username: </span>
         <div class="form-floating">
           <input name="username" type="text" class="form-control" id="floatingUsernameInput" placeholder="Username">
           <label for="floatingUsernameInput">Username</label>
         </div>
       </div>
       <div class="input-group mb-3">
-        <label for="password" class="input-group-text" id="password">Password: </label>
+        <span class="input-group-text">Password: </span>
         <div class="form-floating">
           <input name="username" type="text" class="form-control" id="floatingPasswordInput" placeholder="Username">
           <label for="floatingPasswordInput">Password</label>
@@ -30,6 +31,6 @@ function login() {
         <button class="col btn btn-danger form-control mx-1">Reset</button>
       </div>
     </form>
-    <div class="fs-6">Don't have an account? <a href="#" class="">Register here</a>.</div>
+    <div class="fs-6">Don't have an account? <RouterLink to="./register" class="active">Register here</RouterLink>.</div>
   </div>
 </template>

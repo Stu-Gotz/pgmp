@@ -22,8 +22,9 @@ async function querySql(statement, values) {
 async function handleParams(branch, params) {
   const statement = "SELECT * FROM "+ branch + " WHERE tier=$1 LIMIT 25;";
   const results = await querySql(statement, params);
+  console.log(results)
   const output = {
-    data: [Object.fromEntries(results.map((item) => [item.pokemon, item]))],
+    data: [results],
   };
   return output;
 }
@@ -36,7 +37,8 @@ app.get("/apiv1/current/:tier", async (req, res) => {
     const { tier } = req.params;
     const output = await handleParams("current", [tier]);
     console.log(output)
-    res.body(output);
+    return res.json(output);
+
   } catch (error) {
     console.log(error.message);
   }

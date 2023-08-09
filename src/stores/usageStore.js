@@ -3,9 +3,9 @@ import { defineStore } from 'pinia'
 
 export const useStatStore = defineStore('statStore', {
   state: () => ({
-    current: "",
-    previous:"",
-    tma: "",
+    current: null,
+    previous:null,
+    tma: null,
     apiUrl: "http://127.0.0.1:5500/apiv1"
   }),
   actions: {
@@ -14,7 +14,8 @@ export const useStatStore = defineStore('statStore', {
       console.log(currentUrl)
       try {
         const res = await fetch(currentUrl);
-        this.current = await res.json();
+        const current = await res.json();
+        this.current = current.data[0]
         console.log(this.current)
       } catch (err) {
         console.log(err.message)
@@ -25,7 +26,8 @@ export const useStatStore = defineStore('statStore', {
       console.log(previousUrl)
       try {
         const res = await fetch(previousUrl);
-        this.previous = await res.json();
+        const previous = await res.json();
+        this.previous = previous.data[0]
         console.log(this.previous)
       } catch (err) {
         console.log(err.message)
@@ -36,7 +38,8 @@ export const useStatStore = defineStore('statStore', {
       console.log(olderUrl)
       try {
         const res = await fetch(olderUrl);
-        this.tma = await res.json();
+        const older = await res.json();
+        this.tma = older.data[0];
         console.log(this.tma)
       } catch (err) {
         console.log(err.message)
@@ -46,6 +49,12 @@ export const useStatStore = defineStore('statStore', {
   getters: {
     getCurrent(state) {
       return state.current;
+    },
+    getPrevious(state) {
+      return state.previous;
+    },
+    getTma(state) {
+      return state.tma;
     }
   }
 })

@@ -23,8 +23,8 @@ console.log(username)
             <RouterLink class="nav-link active" to="/"><i class="bi bi-house-door"></i></RouterLink>
           </li>
           <li class="nav-item">
-            <RouterLink v-if="isLoggedIn" class="nav-link active" to="/logout">Hello {{ username }}</RouterLink>
-            <RouterLink v-else class="nav-link active" to="/login">Login</RouterLink>
+            <RouterLink v-if="isLoggedIn" class="nav-link active" to="./logout">Hello {{ username }}</RouterLink>
+            <RouterLink v-else class="nav-link active" to="./login">Login</RouterLink>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -32,7 +32,6 @@ console.log(username)
             </a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="#">Profile</a></li>
-              <!-- <li><a class="dropdown-item" href="#">Another action</a></li> -->
               <li>
                 <hr class="dropdown-divider">
               </li>

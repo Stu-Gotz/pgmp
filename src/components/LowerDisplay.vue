@@ -6,26 +6,31 @@ const statStore = useStatStore();
 
 const { current, previous, tma } = storeToRefs(statStore);
 console.log(current.value)
-console.log(previous.value)
-console.log(tma.value)
+console.log(previous)
+console.log(tma)
+//{{ curr.pokemon }} -- {{ curr.rank }}
 </script>
 
 <template>
   <div class="d-flex h-50 w-100 justify-content-between align-items-start flex-1">
     <div class="h-100 w-100 overflow-auto">
-    <p class="position-absolute text-center m-0 p-0 border-bottom">Current Ranking</p>
+      <p class="position-absolute text-center m-0 p-0 border-bottom">Current Ranking</p>
       <ul class="d-flex flex-column flex-1 align-items-end">
-        <li class="text-align-left pe-2" v-for="curr in current.data">{{ curr.pokemon }} -- {{ curr.rank }}</li>
+        <li class="text-align-left pe-2" v-for="curr in current"> {{ curr.pokemon }} -- {{ curr.rank }}</li>
       </ul>
     </div>
-    <div class="h-100 w-100 overflow-auto"><p class="position-absolute text-center m-0 p-0 border-bottom">Previous Ranking</p>
+    <div class="h-100 w-100 overflow-auto">
+      <p class="position-absolute text-center m-0 p-0 border-bottom">Previous Ranking</p>
       <ul class="d-flex flex-column flex-1 align-items-end">
-        <li class="text-align-left pe-2" v-for="prev in previous.data">{{ prev.pokemon }} -- {{ prev.rank }}</li>
-      </ul></div>
-    <div class="h-100 w-100 overflow-auto"><p class="position-absolute text-center m-0 p-0 border-bottom">Older Ranking</p>
+        <li class="text-align-left pe-2" v-for="prev in previous">{{ prev.pokemon }} -- {{ prev.rank }}</li>
+      </ul>
+    </div>
+    <div class="h-100 w-100 overflow-auto">
+      <p class="position-absolute text-center m-0 p-0 border-bottom">Older Ranking</p>
       <ul class="d-flex flex-column flex-1 align-items-end">
-        <li class="text-align-left pe-2" v-for="old in tma.data">{{ old.pokemon }} -- {{ old.rank }}</li>
-      </ul></div>
+        <li class="text-align-left pe-2" v-for="old in tma">{{ old.pokemon }} -- {{ old.rank }}</li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -33,5 +38,4 @@ console.log(tma.value)
 ul>* {
   font-size: .8rem;
   text-transform: capitalize;
-}
-</style>
+}</style>

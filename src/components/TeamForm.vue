@@ -3,7 +3,9 @@ import { ref, onMounted } from 'vue';
 import { Koffing } from 'koffing';
 import { useTeamStore } from '../stores/store';
 import { useStatStore } from '../stores/usageStore';
+import Pokedex from 'pokedex-promise-v2';
 
+const P = new Pokedex();
 
 const tiers = [
   "ou",
@@ -83,27 +85,27 @@ async function submitForm() {
   const team = teamIn.teams[0].pokemon;
 
   for (var i in team) {
-    const req = await fetch(`https://pokeapi.co/api/v2/pokemon/${team[i].name.toLowerCase()}`);
-    const res = await req.json();
+    const pokemon = await P.getPokemonByName(team[i].name.toLowerCase()); //fetch(`https://pokeapi.co/api/v2/pokemon/${team[i].name.toLowerCase()}`);
+    console.log(pokemon);
 
-    team[i].id = res.id;
-    team[i].spriteUrl = res.sprites.front_default;
+    team[i].dex = pokemon.id;
+    team[i].spriteUrl = pokemon.sprites.front_default;
     team[i].type = [];
     team[i].itemUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${team[i].item.toLowerCase().replace(' ', '-')}.png`;
 
     for (var j in team[i].moves) {
-      const moveReq = await fetch(`https://pokeapi.co/api/v2/move/${team[i].moves[j].toLowerCase().replace(' ', '-')}/`)
-      const moveRes = await moveReq.json();
+      const moves = await P.getMoveByName(team[i].moves[j].toLowerCase().replace(' ', '-'));//fetch(`https://pokeapi.co/api/v2/move/${team[i].moves[j].toLowerCase().replace(' ', '-')}/`)
+      console.log(moves)
       team[i].moves[j] = {
         name: team[i].moves[j],
-        type: moveRes.type.name,
-        priority: moveRes.priority
+        type: moves.type.name,
+        priority: moves.priority
       }
     }
 
-    for (var t in res.types) {
+    for (var t in pokemon.types) {
 
-      team[i].type.push(res.types[t].type.name);
+      team[i].type.push(pokemon.types[t].type.name);
     }
 
   };
