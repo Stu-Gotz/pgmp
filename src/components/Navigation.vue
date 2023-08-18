@@ -5,8 +5,7 @@ import { storeToRefs } from 'pinia';
 
 const userStore = useUserStore();
 const { isLoggedIn, username } = storeToRefs(userStore);
-console.log(isLoggedIn)
-console.log(username)
+
 </script>
 
 <template>

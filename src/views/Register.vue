@@ -7,14 +7,14 @@ const errors = ref([]);
 YupPassword(Yup);
 
 let registrationSchema = Yup.object({
-  username: Yup.string().min(5).max(30).required(),
-  email: Yup.string().min(5).email().required(),
+  username: Yup.string().min(5, 'Username must be at least 5 characters.').max(30).required("Username is required."),
+  email: Yup.string().min(5, "Email must be at least 5 characters.").email().required("Email is required."),
   confirmEmail: Yup.string().oneOf([Yup.ref('email'), null], 'Emails much match.'),
   password: Yup.string().min(8).max(20).minLowercase(1, 'Password must have at least one lower case letter. ')
     .minUppercase(1, 'Password must have at least one capital letter.')
-    .minNumbers(1, 'Password must contain at least one number.')
-    .minSymbols(1, 'Password must contain at least one symbol').required(),
-  confirmPass: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match')
+    .minNumbers(1, 'Password must contain at least one number..')
+    .minSymbols(1, 'Password must contain at least one symbol.').required(),
+  confirmPass: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match.')
 });
 
 function resetErrors(errorList){
@@ -42,6 +42,11 @@ async function checkRegistration(event) {
       console.log(err.errors);
       errors.value.push(...err.errors);
     })
+    
+    if(errors.length === 0) {
+      await fetch("localhost:5173/apiv1/users/register") 
+    }
+
   // pass to user server api to validate further and return errors
   // redirect to registration if unsuccessful
   // redirect to a "success" page before going to profile or main page (havent decided)
@@ -50,9 +55,9 @@ async function checkRegistration(event) {
 
 <template>
   
-  <form @submit.prevent="checkRegistration" class="row w-50 position-absolute top-50 start-50 translate-middle">
+  <form action="/register" @submit.prevent="checkRegistration" class="row w-50 position-absolute top-50 start-50 translate-middle">
     <ul class="d-flex flex-column justify-content-center align-items-center text-danger">
-    <li v-for="error in errors">{{ error }}</li>
+    <li class="text-danger" v-for="error in errors">{{ error }}</li>
   </ul>
     <div class="col d-flex flex-column justify-content-center align-items-center border-end mb-3">
       <div class="d-flex justify-content-center align-self-center input-group">
@@ -70,7 +75,7 @@ async function checkRegistration(event) {
         </div>
       </div>
       <div class="d-flex justify-content-center input-group">
-        <span class="input-group-text w-25">Confirm</span>
+        <span class="input-group-text w-25">Confirm: </span>
         <div class="form-floating">
           <input class="form-control" type="email" name="emailconf" id="confirmEmail">
           <label for="confirmEmail">Confirm email </label>
