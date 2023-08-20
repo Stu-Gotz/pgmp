@@ -1,10 +1,24 @@
 <script setup>
 import * as Yup from 'yup';
 import YupPassword from 'yup-password'
-import { pushScopeId, ref } from 'vue';
+import { reactive, ref } from 'vue';
+import { useAuthStore } from '../stores/authStore';
+import { useRouter } from 'vue-router';
 
+const route = useRouter();
 const errors = ref([]);
 YupPassword(Yup);
+const authStore = useAuthStore();
+
+const userData = reactive({
+  username : "",
+  email : "",
+  confirmEmail : "",
+  password : "",
+  confirmPassword : ""
+});
+
+// testing password to copypaste: P@ssw0rd
 
 let registrationSchema = Yup.object({
   username: Yup.string().min(5, 'Username must be at least 5 characters.').max(30).required("Username is required."),
@@ -20,19 +34,12 @@ let registrationSchema = Yup.object({
 function resetErrors(errorList){
   return errorList.splice(0);
 }
-async function checkRegistration(event) {
-  let formData = {
-    username: event.target[0].value,
-    email: event.target[1].value,
-    confirmEmail: event.target[2].value,
-    password: event.target[3].value,
-    confirmPass: event.target[4].value,
-  }
+async function register() {
 
-  registrationSchema.validate(formData, { abortEarly: false })
-    .then(formData => {
+  registrationSchema.validate(userData, { abortEarly: false })
+    .then(userData => {
       console.log('No errors.');
-      console.log(formData);
+      console.log(userData);
       resetErrors(errors.value);
     })
     .catch((err) => {
@@ -43,8 +50,15 @@ async function checkRegistration(event) {
       errors.value.push(...err.errors);
     })
     
-    if(errors.length === 0) {
-      await fetch("localhost:5173/apiv1/users/register") 
+    if(errors.value.length === 0) {
+      console.log('setting registration data')
+      const registrationData = {username: userData.username, password: userData.password, email: userData.email};
+      console.log("sending registration data")
+      if(authStore.registerUser(registrationData)){
+        console.log('User registered')
+        route.push({path: '/', replace: true});
+      }
+      
     }
 
   // pass to user server api to validate further and return errors
@@ -55,7 +69,7 @@ async function checkRegistration(event) {
 
 <template>
   
-  <form action="/register" @submit.prevent="checkRegistration" class="row w-50 position-absolute top-50 start-50 translate-middle">
+  <form @submit.prevent="register()" class="row w-50 position-absolute top-50 start-50 translate-middle">
     <ul class="d-flex flex-column justify-content-center align-items-center text-danger">
     <li class="text-danger" v-for="error in errors">{{ error }}</li>
   </ul>
@@ -63,21 +77,21 @@ async function checkRegistration(event) {
       <div class="d-flex justify-content-center align-self-center input-group">
         <span class="input-group-text w-25">Username: </span>
         <div class="form-floating w-50">
-          <input class="form-control" type="text" name="username" id="registerName">
+          <input v-model="userData.username" class="form-control" type="text" name="username" id="registerName">
           <label for="registerName">Username</label>
         </div>
       </div>
       <div class="d-flex justify-content-center input-group">
         <span class="input-group-text w-25">Email: </span>
         <div class="form-floating">
-          <input class="form-control" type="email" name="email" id="registerEmail">
+          <input v-model="userData.email" class="form-control" type="email" name="email" id="registerEmail">
           <label for="registerEmail">Email address</label>
         </div>
       </div>
       <div class="d-flex justify-content-center input-group">
         <span class="input-group-text w-25">Confirm: </span>
         <div class="form-floating">
-          <input class="form-control" type="email" name="emailconf" id="confirmEmail">
+          <input v-model="userData.confirmEmail" class="form-control" type="email" name="emailconf" id="confirmEmail">
           <label for="confirmEmail">Confirm email </label>
         </div>
       </div>
@@ -87,14 +101,14 @@ async function checkRegistration(event) {
       <div class="d-flex justify-content-center input-group">
         <span class="input-group-text w-25">Password: </span>
         <div class="form-floating">
-          <input class="form-control" type="password" name="password" id="registerPassword">
+          <input v-model="userData.password" class="form-control" type="password" name="password" id="registerPassword">
           <label for="registerPassword">Password </label>
         </div>
       </div>
       <div class="d-flex justify-content-center input-group">
         <span class="input-group-text w-25">Confirm: </span>
         <div class="form-floating">
-          <input class="form-control" type="password" name="passconf" id="passconf">
+          <input v-model="userData.confirmPassword" class="form-control" type="password" name="passconf" id="passconf">
           <label for="passconf">Confirm password </label>
         </div>
       </div>
@@ -102,7 +116,7 @@ async function checkRegistration(event) {
     </div>
     <div class="d-flex justify-content-center align-items-center input-group">
       <button class="btn btn-success mx-1 rounded" type="submit">Register</button>
-      <RouterLink to="/"><button class="btn btn-danger mx-1 rounded">Cancel</button></RouterLink>
+      <RouterLink to="/"><button class="btn btn-danger mx-1 rounded" type="reset">Cancel</button></RouterLink>
     </div>
   </form>
 </template>

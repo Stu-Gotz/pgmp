@@ -1,10 +1,12 @@
 const express = require("express");
 const app = express();
-const pool = require("./sql_db");
-const cors = require("cors");
-const {mongo, userModel} = require("./mongo_db");
-const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const cors = require("cors");
+const jwt = require("jsonwebtoken");
+const { mongo, userModel } = require("./mongo_db");
+const mongoose = require("mongoose");
+const pool = require("./sql_db");
+
 const PORT = process.env.PORT || 5500;
 
 // middleware
@@ -83,7 +85,6 @@ app.post("/apiv1/login", async (req, res) => {
     if (!userData) {
       res.sendStatus(404);
     }
-
     const storedPass = userData.password;
     console.log(`stored password is: ${storedPass}`);
     const validPassword = await bcrypt.compare(password, storedPass);
@@ -94,8 +95,18 @@ app.post("/apiv1/login", async (req, res) => {
       res.sendStatus(403);
     }
 
+    // get user profile data, this won't be used in this project, but the
+    // idea is that the user profile stores user data, such as name, dob etc (all optional except for username)
+
+    // Keeping the profile information separate from the login information is done because
+    // SQL is really well designed for logging in, and I'm much more familiar with querying SQL
+    // but because user profile data can be wildly varying and the teams key is an array of objects
+    // it made sense to use MongoDB for this. While SQL DOES support JSON columns, there can issues
+    // using unicode escapes and so on, and as well I believe has slightly more overhead than with NoSQL
+    // and also I just wanted to experience working with two databases in a single application.
+
+    //In future use, userProfile will be used to populate a profile page, and save teams, if desired.
     const userProfile = await userModel.findById(userData.mongo_id).exec();
-    console.log(userProfile);
 
     //sign token (This isn't used in this application as we aren't using cookies,
     // but in a real world scenario, or possibly in the future, it might be useful)
@@ -107,33 +118,59 @@ app.post("/apiv1/login", async (req, res) => {
       },
       "secretkey"
     );
-    res.json({
+    res.status(200).send({
       username: userData.username,
       role: userData.role,
       mongo_id: userData.mongo_id,
       profile: userProfile,
       token,
     });
-    // All good, send 200 (Success)
-    // res.send(200).json();
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
   }
 });
 
-// app.post("/apiv1/userData/", verifyToken, async(req, res) => {
-//   jwt.verifyToken(req.token, "secretKey", (err, authData) => {
-//     if (err) {
-//       res.sendStatus(403); //denied access
-//     } else {
-//       res.json({
-//         loggedIn: true,
-//         authData,
-//       })
-//     }
-//   })
-// })
+app.post("/apiv1/register", async (req, res) => {
+  const { username, password, email } = req.body;
+  console.log(`${username}, ${password}, ${email}`);
+  try {
+    const hashedPass = await bcrypt.hash(password, 10);
+    const validCheckQuery = "SELECT 1 FROM users WHERE USERNAME = $1";
+    const validCheckRes = await pool.query(validCheckQuery, [username]);
+    const validCheck = validCheckRes.rows[0];
+
+    if (validCheck) {
+      res.status(400).json({
+        message: "Username already in use, please choose another username.",
+      });
+    } else {
+      // make mongo DB entry first, to get MongoID
+      const newUserId = new mongoose.Types.ObjectId();
+      console.log(newUserId);
+      const newUser = new userModel({
+        _id: newUserId,
+        username: username,
+        email: email,
+      });
+      await newUser.save();
+      console.log(newUser);
+      const strippedID = newUserId.toString(); //without this, mongo_id is wrapped in quotes in the database
+      const newPgUserQuery =
+        "INSERT INTO users (username, password, mongo_id) VALUES ($1, $2, $3)";
+      await pool.query(newPgUserQuery, [
+        username,
+        hashedPass,
+        strippedID,
+      ]).then(
+        res.status(201).send({ message: `Successfuly registered ${username}` })
+      );
+      // res.status(201);
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 // Verifys the token on login, if
 // function verifyToken(req, res, next){

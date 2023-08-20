@@ -3,6 +3,7 @@ import { RouterLink, useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/authStore';
 import { reactive } from 'vue';
 
+
 const route = useRouter();
 const user = reactive({
   username: "",
@@ -14,8 +15,6 @@ const authStore = useAuthStore();
 // Login Function (username pw validation)
 // Error Handling (send message, and clear form.)
 function login() {
-  console.log(user.username)
-  console.log(user.password)
   const formData = {
     username: user.username, 
     password: user.password
