@@ -6,12 +6,15 @@ export const useUserStore = defineStore("userStore", {
     isLogedIn: false,
     role: null,
     profileData: null,
+    id: null,
   }),
   actions: {
     setUserData(userData) {
       this.username = userData.username;
       this.isLoggedIn = true;
-      (this.role = userData.role), (this.profileData = userData.profile);
+      this.id = userData.userId;
+      this.role = userData.role;
+      this.profileData = userData.profile;
       console.log(this.$state);
     },
     logout() {
@@ -21,17 +24,17 @@ export const useUserStore = defineStore("userStore", {
   getters: {
     getUsername(state) {
       return {
-        username: this.username,
+        username: state.username,
       };
     },
     getUserRole(state) {
       return {
-        userRole: this.username,
+        userRole: state.username,
       };
     },
     getUserProfileData(state) {
       return {
-        userProfileData: this.profileData,
+        userProfileData: state.profileData,
       };
     },
   },

@@ -109,7 +109,7 @@ app.post("/apiv1/login", async (req, res) => {
     const userProfile = await userModel.findById(userData.mongo_id).exec();
 
     //sign token (This isn't used in this application as we aren't using cookies,
-    // but in a real world scenario, or possibly in the future, it might be useful)
+    // but in a real-world scenario, or possibly in the future, it might be useful)
     const token = jwt.sign(
       {
         username: userData.username,
@@ -171,19 +171,6 @@ app.post("/apiv1/register", async (req, res) => {
     console.log(err);
   }
 });
-
-// Verifys the token on login, if
-// function verifyToken(req, res, next){
-//   const bearerHeader = req.headers['authorization'];
-//   if (typeof bearerHeader !== 'undefined') {
-//     const bearerToken = bearerHeader.split(' ')[1];
-
-//     req.token = bearerToken;
-//     next()
-//   } else {
-//     res.sendStatus(403);
-//   }
-// }
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}.`);

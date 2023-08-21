@@ -1,27 +1,18 @@
-import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-
-import Pokedex from 'pokedex-promise-v2';
-class Team {
-  
-}
 
 export const useTeamStore = defineStore('teamStore', {
   state: () => ({
-    team: "",
+    team: null,
   }),
   getters: {
-    getTeam: () => {
-      return this.team;
+    getTeam: (state) => {
+      return state.team;
     }
   },
   actions: {
     updateTeam (team) {
       this.team = team
     }
-    // createDex ({ commit }, newDex) {
-    //   commit('createDex', newDex)
-    // }
   }
 
 })

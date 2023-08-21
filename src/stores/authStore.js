@@ -26,8 +26,8 @@ export const useAuthStore = defineStore("authStore", {
           const data = await res.json();
           this.token = data.token;
           console.log(data);
-          //login user after registration, saves user clicks
-          userStore.setUserData({username: data.username, role: data.role, profile: data.userProfile})
+          //set userStore data so it can be accessed through the profile.
+          userStore.setUserData({username: data.username, role: data.role, profile: data.userProfile, userId: data.mongo_id})
           return true;
         } else {
           console.log("Unable to login.");
@@ -55,7 +55,7 @@ export const useAuthStore = defineStore("authStore", {
           const data = await res.json();
           console.log(data)
 
-          //login after registering
+          //login user after registration, saves user clicks
           this.loginUser({username: registerForm.username, password: registerForm.password});
           return true;
         } else {
