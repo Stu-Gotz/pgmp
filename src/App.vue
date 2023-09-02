@@ -28,6 +28,9 @@ import Navigation from './components/Navigation.vue';
   }
 }
 
+body {
+  background-color: #9e82c2;
+}
 ul,
 li {
   list-style: none;

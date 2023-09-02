@@ -11,9 +11,7 @@ const user = reactive({
 });
 
 const authStore = useAuthStore();
-// TODO:
-// Login Function (username pw validation)
-// Error Handling (send message, and clear form.)
+
 function login() {
   const formData = {
     username: user.username, 
@@ -52,6 +50,6 @@ function login() {
         <button class="col btn btn-danger form-control mx-1">Reset</button>
       </div>
     </form>
-    <div class="fs-6">Don't have an account? <RouterLink to="./register" class="active">Register here</RouterLink>.</div>
+    <div class="fs-6">Don't have an account? <RouterLink to="./register" class="link-light link-opacity-100-hover">Register here</RouterLink>.</div>
   </div>
 </template>

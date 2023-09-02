@@ -5,10 +5,7 @@ import { storeToRefs } from 'pinia';
 const statStore = useStatStore();
 
 const { current, previous, tma } = storeToRefs(statStore);
-console.log(current.value)
-console.log(previous)
-console.log(tma)
-//{{ curr.pokemon }} -- {{ curr.rank }}
+
 </script>
 
 <template>

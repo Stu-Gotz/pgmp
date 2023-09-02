@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue';
 import { Koffing } from 'koffing';
 import { useTeamStore } from '../stores/store';
 import { useStatStore } from '../stores/usageStore';
+import { storeToRefs } from 'pinia';
 import Pokedex from 'pokedex-promise-v2';
 
 const P = new Pokedex();
@@ -65,9 +66,11 @@ const gens = ["gen1", "gen2", "gen3", "gen4", "gen5", "gen6", "gen7", "gen8", "g
 
 // Reactive variables from the form, which will be used to query the database to populate
 // the other half of the page
-const state = ref()
-const tier = ref("")
-const gen = ref("")
+const state = ref(null);
+const tier = ref("");
+const gen = ref("");
+const teamName = ref("");
+const fullname = `=== ${gen.value}${tier.value} ${teamName.value}===`;
 
 // stores
 const teamStore = useTeamStore();
@@ -79,43 +82,61 @@ onMounted(() => {
   gen.value = "";
 })
 
+const errors = ref([]);
 
 async function submitForm() {
-  const teamIn = Koffing.parse(state.value);
-  const team = teamIn.teams[0].pokemon;
+  console.log(errors.value)
+  errors.value = [];
+  console.log(errors.value)
+  if (state.value === null) {
+    errors.value.push("Please paste a team into the area below.");
+    console.log(errors.value)
+    // return
+  } else if (gen.value === "") {
+    errors.value.push("Please select a generation from the dropdown below.");
+    console.log(errors.value)
 
-  for (var i in team) {
-    const pokemon = await P.getPokemonByName(team[i].name.toLowerCase()); //fetch(`https://pokeapi.co/api/v2/pokemon/${team[i].name.toLowerCase()}`);
-    console.log(pokemon);
+    // return
+  } else if (tier.value === "") {
+    errors.value.push("Please select a tier from the dropdown below.");
+    console.log(errors.value)
 
-    team[i].dex = pokemon.id;
-    team[i].spriteUrl = pokemon.sprites.front_default;
-    team[i].type = [];
-    team[i].itemUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${team[i].item.toLowerCase().replace(' ', '-')}.png`;
+    // return
+  } else {
+    const teamIn = Koffing.parse(state.value);
+    const team = teamIn.teams[0].pokemon;
 
-    for (var j in team[i].moves) {
-      const moves = await P.getMoveByName(team[i].moves[j].toLowerCase().replace(' ', '-'));//fetch(`https://pokeapi.co/api/v2/move/${team[i].moves[j].toLowerCase().replace(' ', '-')}/`)
-      console.log(moves)
-      team[i].moves[j] = {
-        name: team[i].moves[j],
-        type: moves.type.name,
-        priority: moves.priority
+    for (var i in team) {
+      const pokemon = await P.getPokemonByName(team[i].name.toLowerCase()); //fetch(`https://pokeapi.co/api/v2/pokemon/${team[i].name.toLowerCase()}`);
+      team[i].dex = pokemon.id;
+      team[i].spriteUrl = pokemon.sprites.front_default;
+      team[i].type = [];
+      team[i].itemUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${team[i].item.toLowerCase().replace(' ', '-')}.png`;
+
+      for (var j in team[i].moves) {
+        const moves = await P.getMoveByName(team[i].moves[j].toLowerCase().replace(' ', '-'));//fetch(`https://pokeapi.co/api/v2/move/${team[i].moves[j].toLowerCase().replace(' ', '-')}/`)
+
+        team[i].moves[j] = {
+          name: team[i].moves[j],
+          type: moves.type.name,
+          priority: moves.priority
+        }
       }
-    }
 
-    for (var t in pokemon.types) {
+      for (var t in pokemon.types) {
 
-      team[i].type.push(pokemon.types[t].type.name);
-    }
+        team[i].type.push(pokemon.types[t].type.name);
+      }
 
-  };
-  const tranche = gen.value + tier.value;
-  await statStore.setCurrent(tranche);
-  await statStore.setPrevious(tranche);
-  await statStore.setOlder(tranche);
+    };
+    const tranche = gen.value + tier.value;
+    await statStore.setCurrent(tranche);
+    await statStore.setPrevious(tranche);
+    await statStore.setOlder(tranche);
 
 
-  teamStore.updateTeam(team);
+    teamStore.updateTeam(team);
+  }
 }
 
 function clearForm() {
@@ -127,16 +148,22 @@ function clearForm() {
 <template>
   <!-- left half  -->
   <form @submit.prevent class="d-flex flex-column flex-1">
+    <ul v-if="errors.value">
+      <li v-for="{ idx, err } in errors.value">{{ idx }} - {{ err }}</li>
+    </ul>
+    <label class="team-name" for="genInput">Please select the generation:</label>
+    <input class="form-control ps-2 pt-0 mx-2 mb-2 mt-0" type="text" id="team-name" placeholder="Team Name (optional)">
     <label class="form-label" for="genInput">Please select the generation:</label>
     <select v-model="gen" class="form-select ps-2 pt-0 mx-2 mb-2 mt-0" name="genInput" id="genInput">
       <option v-for="gen in gens">{{ gen }}</option>
     </select>
     <label class="form-label" for="tierInput">Please select the tier your team is in:</label>
-    <select v-model="tier" class="form-select ps-2 pt-0 mx-2 mb-2 mt-0" name="tierInput" id="tierInput">      <option v-for="tier in tiers">{{ tier }}</option>
+    <select v-model="tier" class="form-select ps-2 pt-0 mx-2 mb-2 mt-0" name="tierInput" id="tierInput">
+      <option v-for="tier in tiers">{{ tier }}</option>
     </select>
     <label class="form-label" for="teamPasteArea">Please paste your Showdown output below: </label>
-    <textarea class="form-control pastearea d-flex flex-column h-100 flex-grow-1" placeholder="" name="teamPasteArea" id="teamPasteArea"
-      v-model="state">
+    <textarea class="form-control pastearea d-flex flex-column h-100 flex-grow-1" placeholder="" name="teamPasteArea"
+      id="teamPasteArea" v-model="state">
     </textarea>
     <div class="d-flex align-items-center justify-content-around">
       <button @click="submitForm()" type="button" class="btn btn-success form-control w-25">Submit</button>
@@ -146,10 +173,10 @@ function clearForm() {
 </template>
 
 <style lang="scss">
-
 form {
   font-size: .8rem;
 }
+
 .pastearea {
   outline: 0 none;
   padding: 10px;
@@ -160,6 +187,7 @@ form {
   border: none;
   border-radius: 10px;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, .3);
+
   // height: calc(100% - 300px);
   &::-webkit-scrollbar {
     // width: 12px;
@@ -178,15 +206,10 @@ form {
       border-radius: 20px;
     }
   }
-
-  &:focus {
-    outline: none !important;
-    border: 2px solid darkorchid;
-    box-shadow: 0 0 10px mediumorchid;
-  }
 }
 
-.form-select:focus {
+.form-select:focus,
+.form-control:focus {
   outline: none !important;
   border: 2px solid darkorchid;
   box-shadow: 0 0 10px mediumorchid;

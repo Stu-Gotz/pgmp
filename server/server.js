@@ -27,7 +27,7 @@ async function handleParams(branch, params) {
   const statement = "SELECT * FROM " + branch + " WHERE tier=$1 LIMIT 25;";
   const results = await querySql(statement, params);
   const output = {
-    data: [results],
+    data: results
   };
   return output;
 }
@@ -83,7 +83,9 @@ app.post("/apiv1/login", async (req, res) => {
 
     //if it doesn't return a userData, send 404 (Not Found)
     if (!userData) {
-      res.sendStatus(404);
+      res.json({
+        message: "Please provide username and password."
+      });
     }
     const storedPass = userData.password;
     console.log(`stored password is: ${storedPass}`);
@@ -92,7 +94,9 @@ app.post("/apiv1/login", async (req, res) => {
 
     // if passwords don't match, send 403 (Unauthorised)
     if (!validPassword) {
-      res.sendStatus(403);
+      res.json({
+        message: "Invalid login credentials."
+      });
     }
 
     // get user profile data, this won't be used in this project, but the
@@ -127,7 +131,6 @@ app.post("/apiv1/login", async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.sendStatus(500);
   }
 });
 
@@ -141,7 +144,7 @@ app.post("/apiv1/register", async (req, res) => {
     const validCheck = validCheckRes.rows[0];
 
     if (validCheck) {
-      res.status(400).json({
+      res.json({
         message: "Username already in use, please choose another username.",
       });
     } else {
@@ -165,7 +168,6 @@ app.post("/apiv1/register", async (req, res) => {
       ]).then(
         res.status(201).send({ message: `Successfuly registered ${username}` })
       );
-      // res.status(201);
     }
   } catch (err) {
     console.log(err);

@@ -38,24 +38,17 @@ async function register() {
 
   registrationSchema.validate(userData, { abortEarly: false })
     .then(userData => {
-      console.log('No errors.');
-      console.log(userData);
       resetErrors(errors.value);
     })
     .catch((err) => {
       resetErrors(errors.value);
-      console.log(err);
-      console.log(err.name);
-      console.log(err.errors);
       errors.value.push(...err.errors);
     })
     
     if(errors.value.length === 0) {
-      console.log('setting registration data')
       const registrationData = {username: userData.username, password: userData.password, email: userData.email};
-      console.log("sending registration data")
       if(authStore.registerUser(registrationData)){
-        console.log('User registered')
+
         route.push({path: '/', replace: true});
       }
       

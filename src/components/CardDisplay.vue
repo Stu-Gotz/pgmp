@@ -1,8 +1,11 @@
 <script setup>
 import CardFront from './Cards/CardFront.vue';
+import CardBack from './Cards/CardBack.vue';
+import Card from './Card.vue';
 import WelcomeCards from './Cards/WelcomeCards.vue'
 import { useTeamStore } from '../stores/store';
-const store = useTeamStore();
+const teamStore = useTeamStore();
+
 </script>
 
 
@@ -13,8 +16,9 @@ const store = useTeamStore();
     <div class="cards">
       <!-- This begins each card element. A goal in the project is to turn this into smaller components -->
       <!-- This is technically bad practice, I will optimize later if time is available. -->
-      <WelcomeCards v-if="!store.team"  />
-      <CardFront v-else v-for="i in store.team" :pokemon="i"/>
+      <WelcomeCards v-if="!teamStore.team"  />
+      <!-- <CardFront v-else v-for="i in teamStore.team" :pokemon="i"/> -->
+      <Card v-else :pokemon="teamStore.team" />
     </div>
   </div>
   <!-- End Top Half Page -->

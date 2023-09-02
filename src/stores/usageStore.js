@@ -15,7 +15,7 @@ export const useStatStore = defineStore('statStore', {
       try {
         const res = await fetch(currentUrl);
         const current = await res.json();
-        this.current = current.data[0]
+        this.current = current.data
         console.log(this.current)
       } catch (err) {
         console.log(err.message)
@@ -27,7 +27,7 @@ export const useStatStore = defineStore('statStore', {
       try {
         const res = await fetch(previousUrl);
         const previous = await res.json();
-        this.previous = previous.data[0]
+        this.previous = previous.data
         console.log(this.previous)
       } catch (err) {
         console.log(err.message)
@@ -39,7 +39,7 @@ export const useStatStore = defineStore('statStore', {
       try {
         const res = await fetch(olderUrl);
         const older = await res.json();
-        this.tma = older.data[0];
+        this.tma = older.data;
         console.log(this.tma)
       } catch (err) {
         console.log(err.message)

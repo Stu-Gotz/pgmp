@@ -6,6 +6,8 @@ import { storeToRefs } from 'pinia';
 const userStore = useUserStore();
 const { isLoggedIn, username } = storeToRefs(userStore);
 
+userStore.$subscribe((mutation, state) => {return}, { detached: true })
+
 </script>
 
 <template>
@@ -21,9 +23,24 @@ const { isLoggedIn, username } = storeToRefs(userStore);
           <li class="nav-item">
             <RouterLink class="nav-link active" to="/"><i class="bi bi-house-door"></i></RouterLink>
           </li>
-          <li class="nav-item">
-            <RouterLink v-if="isLoggedIn" class="nav-link active" to="./logout">Hello {{ username }}</RouterLink>
-            <RouterLink v-else class="nav-link active" to="./login">Login</RouterLink>
+          <li v-if="isLoggedIn" class="nav-item">
+          <li class="nav-item dropdown">
+          <!-- View if User is logged in -->
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Hello {{ username }}
+            </a>
+
+            <ul class="dropdown-menu">
+              <li>
+                <RouterLink class="nav-link active" to="/logout">Logout</RouterLink>
+              </li>
+              <li class="me-auto mb-2 mb-lg-0"><RouterLink class="nav-link active" to="#">View Profile</RouterLink></li>
+            </ul>
+          </li>
+          </li>
+          <!-- If not logged in, present option to login -->
+          <li v-else class="nav-item">
+            <RouterLink class="nav-link active" to="/login">Login</RouterLink>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -34,7 +51,7 @@ const { isLoggedIn, username } = storeToRefs(userStore);
               <li>
                 <hr class="dropdown-divider">
               </li>
-              <li><a class="dropdown-item" href="localhost:5500/index.html">API</a></li>
+              <li><a class="dropdown-item" href="http://127.0.0.1:5500/index.html">API</a></li>
               <li class="nav-item">
                 <a class="nav-link disabled">Report a Bug</a>
               </li>
