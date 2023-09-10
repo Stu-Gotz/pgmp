@@ -10,7 +10,6 @@ export const useAuthStore = defineStore("authStore", {
   }),
   actions: {
     async loginUser(loginForm) {
-      console.log(loginForm);
       try {
         const headers = {
           method: "POST",
@@ -19,13 +18,10 @@ export const useAuthStore = defineStore("authStore", {
           },
           body: JSON.stringify(loginForm),
         };
-        console.log(headers);
         const res = await fetch(`${baseUrl}/login`, headers);
-        console.log(res);
         if (res.status === 200) {
           const data = await res.json();
           this.token = data.token;
-          console.log(data);
           //set userStore data so it can be accessed through the profile.
           userStore.setUserData({username: data.username, role: data.role, profile: data.userProfile, userId: data.mongo_id})
           return true;
@@ -51,10 +47,7 @@ export const useAuthStore = defineStore("authStore", {
         console.log(res)
         if (res.status === 201) {
           console.log("Successful registration");
-          
           const data = await res.json();
-          console.log(data)
-
           //login user after registration, saves user clicks
           this.loginUser({username: registerForm.username, password: registerForm.password});
           return true;
@@ -62,7 +55,6 @@ export const useAuthStore = defineStore("authStore", {
           console.log("Unable to register user");
         }
       } catch (err) {
-        
         console.log(err.message);
         return false;
       }

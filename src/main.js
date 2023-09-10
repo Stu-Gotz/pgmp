@@ -1,10 +1,11 @@
+//default Vue CSS files.
 import './assets/main.css';
 
-// Import vue basics.
+// Import Vue & Pinia.
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 
-// Import custom CSS
+// Import Bootstrap SCSS files
 import './scss/styles.scss';
 
 // Import all of Bootstrap's JS

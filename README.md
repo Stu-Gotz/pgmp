@@ -1,29 +1,9 @@
-# pgmp
+# Post-Graduate Major Project
 
-This template should help get you started developing with Vue 3 in Vite.
+This is my (Alan Nardo) post-graduate major project for the Information and Communication Technology (ICT) Master's Course at Anglia Ruskin University. All names and images of Pokémon are owned by Nintendo. Usage stats information is owned by Smogon.com.
 
-## Recommended IDE Setup
+This project uses a Vue front-end to serve an application to the user to compare their team against current metagame trends as indicated by usage stats. While usage stats do not describe the whole picture of a metagame, it provides a good reference on what encounters one might expect as they battle their way up the ladder.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+Data is collected and parsed with Python scripts (found in the `python` folder) from smogon.com/stats, the main repository of available battle data information from PokemonShowdown, an online battle simulator created by the Smogon.com community. More information on stats and rankings can be found [here](https://www.smogon.com/forums/threads/gen-9-smogon-university-usage-statistics-discussion-thread.3711767/). Usage stats for this application are stored in a PostgreSQL (v15) database. In the application, users are able to register, and that user information is stored in a MongoDB collection, as users may want to have more or less information about themselves on their profile. Only the three most recent months of usage stats data is displayed. Some tiers may not have three months available, especially if they are not frequently played tiers.
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
+As far as resources that were helpful in this project vis-á-vis data presentation, the PokeAPI and [koffing](https://github.com/itsjavi/koffing) javascript library are essential. PokeAPI aims to become the "one stop shop" for Pokémon data online, and has a wealth of information available. The koffing library is built by a member of the Smogon.com community and parses team text data from PokemonShowdown exports.
