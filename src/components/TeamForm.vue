@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { Koffing } from 'koffing';
-import { useTeamStore } from '../stores/store';
+import { useTeamStore } from '../stores/teamStore';
 import { useStatStore } from '../stores/usageStore';
 import { storeToRefs } from 'pinia';
 import Pokedex from 'pokedex-promise-v2';
