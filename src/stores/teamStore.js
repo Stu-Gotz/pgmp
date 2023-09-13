@@ -14,5 +14,4 @@ export const useTeamStore = defineStore('teamStore', {
       this.team = team
     }
   }
-
 })

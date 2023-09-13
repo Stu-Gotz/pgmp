@@ -6,6 +6,17 @@ const statStore = useStatStore();
 
 const { current, previous, tma } = storeToRefs(statStore);
 
+function rankChange(oldRank, newRank) {
+
+  if (oldRank > newRank) {
+    return { 'background-color': '#f57e76' };
+  } else if (newRank > oldRank) {
+    return { 'background-color': '#69d682' };
+  } else {
+    return null;
+  }
+}
+
 </script>
 
 <template>
@@ -13,7 +24,8 @@ const { current, previous, tma } = storeToRefs(statStore);
     <div class="h-100 w-100 overflow-auto">
       <p class="position-absolute text-center m-0 p-0 border-bottom">Current Ranking</p>
       <ul class="d-flex flex-column flex-1 align-items-end">
-        <li class="text-align-left pe-2" v-for="curr in current"> {{ curr.pokemon }} -- {{ curr.rank }}</li>
+        <li :style="rankChange(prev.rank, curr.rank)" class="text-align-left pe-2" v-for="curr in current"> {{
+          curr.pokemon }} -- {{ curr.rank }}</li>
       </ul>
     </div>
     <div class="h-100 w-100 overflow-auto">
@@ -35,4 +47,5 @@ const { current, previous, tma } = storeToRefs(statStore);
 ul>* {
   font-size: .8rem;
   text-transform: capitalize;
-}</style>
+}
+</style>

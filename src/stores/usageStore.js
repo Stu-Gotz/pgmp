@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 
-
 export const useStatStore = defineStore('statStore', {
   state: () => ({
     current: null,

@@ -1,4 +1,4 @@
-import smogon_pull as SP
+# import smogon_pull as SP
 import DBManager as DBM
 
 # SP.update()

@@ -70,35 +70,23 @@ app.get("/apiv1/older/:tier", async (req, res) => {
 
 app.post("/apiv1/login", async (req, res) => {
   //Get the login creds from the request
-  console.log(req.body);
   const { username, password } = req.body;
-  console.log(`username is ${username}, password is ${password}`);
   try {
     //Query the database, similar to above, just searching a different table
     const loginQuery =
       "SELECT id, role, mongo_id, username, password FROM users WHERE username = $1";
     const queryRes = await pool.query(loginQuery, [username]);
     const userData = queryRes.rows[0];
-    console.log(userData);
-
     //if it doesn't return a userData, send 404 (Not Found)
     if (!userData) {
-      res.json({
-        message: "Please provide username and password."
-      });
+      res.json({message: "Please provide username and password."});
     }
     const storedPass = userData.password;
-    console.log(`stored password is: ${storedPass}`);
     const validPassword = await bcrypt.compare(password, storedPass);
-    console.log(validPassword);
-
     // if passwords don't match, send 403 (Unauthorised)
     if (!validPassword) {
-      res.json({
-        message: "Invalid login credentials."
-      });
+      res.json({message: "Invalid login credentials."});
     }
-
     // get user profile data, this won't be used in this project, but the
     // idea is that the user profile stores user data, such as name, dob etc (all optional except for username)
 
@@ -111,7 +99,6 @@ app.post("/apiv1/login", async (req, res) => {
 
     //In future use, userProfile will be used to populate a profile page, and save teams, if desired.
     const userProfile = await userModel.findById(userData.mongo_id).exec();
-
     //sign token (This isn't used in this application as we aren't using cookies,
     // but in a real-world scenario, or possibly in the future, it might be useful)
     const token = jwt.sign(
@@ -136,13 +123,11 @@ app.post("/apiv1/login", async (req, res) => {
 
 app.post("/apiv1/register", async (req, res) => {
   const { username, password, email } = req.body;
-  console.log(`${username}, ${password}, ${email}`);
   try {
     const hashedPass = await bcrypt.hash(password, 10);
     const validCheckQuery = "SELECT 1 FROM users WHERE USERNAME = $1";
     const validCheckRes = await pool.query(validCheckQuery, [username]);
     const validCheck = validCheckRes.rows[0];
-
     if (validCheck) {
       res.json({
         message: "Username already in use, please choose another username.",
@@ -150,14 +135,12 @@ app.post("/apiv1/register", async (req, res) => {
     } else {
       // make mongo DB entry first, to get MongoID
       const newUserId = new mongoose.Types.ObjectId();
-      console.log(newUserId);
       const newUser = new userModel({
         _id: newUserId,
         username: username,
         email: email,
       });
       await newUser.save();
-      console.log(newUser);
       const strippedID = newUserId.toString(); //without this, mongo_id is wrapped in quotes in the database
       const newPgUserQuery =
         "INSERT INTO users (username, password, mongo_id) VALUES ($1, $2, $3)";

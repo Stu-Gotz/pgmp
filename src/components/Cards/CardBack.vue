@@ -8,13 +8,9 @@ defineProps(['pokemon'])
 <template>
   <div class="card back card-body">
 
-  <div >Strength:
-  rock
-  </div>
-  <div >Weakness
-  fire</div>
+    <div class="h-100 w-100">Incomplete</div>
 
-  
-  <!-- {{ pokemon.type }}</div> -->
+
+    <!-- {{ pokemon.type }}</div> -->
   </div>
 </template>
