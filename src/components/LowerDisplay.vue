@@ -24,7 +24,7 @@ function rankChange(oldRank, newRank) {
     <div class="h-100 w-100 overflow-auto">
       <p class="position-absolute text-center m-0 p-0 border-bottom">Current Ranking</p>
       <ul class="d-flex flex-column flex-1 align-items-end">
-        <li :style="rankChange(prev.rank, curr.rank)" class="text-align-left pe-2" v-for="curr in current"> {{
+        <li class="text-align-left pe-2" v-for="curr in current"> {{
           curr.pokemon }} -- {{ curr.rank }}</li>
       </ul>
     </div>
