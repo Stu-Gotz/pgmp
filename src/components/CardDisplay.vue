@@ -3,7 +3,7 @@ import CardFront from './Cards/CardFront.vue';
 import CardBack from './Cards/CardBack.vue';
 import Card from './Card.vue';
 import WelcomeCards from './Cards/WelcomeCards.vue';
-import { useTeamStore } from '../stores/store';
+import { useTeamStore } from '../stores/teamStore';
 const teamStore = useTeamStore();
 </script>
 
