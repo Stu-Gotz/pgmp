@@ -61,7 +61,7 @@ const tiers = [
   "doubleslc"
 ];
 
-const gens = ["gen1", "gen2", "gen3", "gen4", "gen5", "gen6", "gen7", "gen8", "gen9"]
+const gens = ["gen1", "gen2", "gen3", "gen4", "gen5", "gen6", "gen7", "gen8", "gen9"];
 
 
 // Reactive variables from the form, which will be used to query the database to populate
@@ -80,28 +80,23 @@ onMounted(() => {
   state.value = "";
   tier.value = "";
   gen.value = "";
-})
+});
 
 const errors = ref([]);
 
 async function submitForm() {
-  console.log(errors.value)
+  console.log(errors.value);
   errors.value = [];
-  console.log(errors.value)
+  console.log(errors.value);
   if (state.value === null) {
     errors.value.push("Please paste a team into the area below.");
-    console.log(errors.value)
-    // return
+    console.log(errors.value);
   } else if (gen.value === "") {
     errors.value.push("Please select a generation from the dropdown below.");
-    console.log(errors.value)
-
-    // return
+    console.log(errors.value);
   } else if (tier.value === "") {
     errors.value.push("Please select a tier from the dropdown below.");
-    console.log(errors.value)
-
-    // return
+    console.log(errors.value);
   } else {
     const teamIn = Koffing.parse(state.value);
     const team = teamIn.teams[0].pokemon;
@@ -114,27 +109,22 @@ async function submitForm() {
       team[i].itemUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${team[i].item.toLowerCase().replace(' ', '-')}.png`;
 
       for (var j in team[i].moves) {
-        const moves = await P.getMoveByName(team[i].moves[j].toLowerCase().replace(' ', '-'));//fetch(`https://pokeapi.co/api/v2/move/${team[i].moves[j].toLowerCase().replace(' ', '-')}/`)
-
+        const moves = await P.getMoveByName(team[i].moves[j].toLowerCase().replace(' ', '-'));
         team[i].moves[j] = {
           name: team[i].moves[j],
           type: moves.type.name,
           priority: moves.priority
-        }
+        };
       }
 
       for (var t in pokemon.types) {
-
         team[i].type.push(pokemon.types[t].type.name);
       }
-
     };
     const tranche = gen.value + tier.value;
     await statStore.setCurrent(tranche);
     await statStore.setPrevious(tranche);
     await statStore.setOlder(tranche);
-
-
     teamStore.updateTeam(team);
   }
 }
