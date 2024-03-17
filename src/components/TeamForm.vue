@@ -84,6 +84,7 @@ onMounted(() => {
 
 const errors = ref([]);
 
+
 async function submitForm() {
   console.log(errors.value)
   errors.value = [];
@@ -103,39 +104,55 @@ async function submitForm() {
 
     // return
   } else {
-    const teamIn = Koffing.parse(state.value);
-    const team = teamIn.teams[0].pokemon;
+    const team = teamStore.parseInput(state.value);
+    // console.log(team)
+    // const teamIn = Koffing.parse(state.value);
+    // const team = teamIn.teams[0].pokemon;
+    
+    // // console.log(team)
 
-    for (var i in team) {
-      const pokemon = await P.getPokemonByName(team[i].name.toLowerCase()); //fetch(`https://pokeapi.co/api/v2/pokemon/${team[i].name.toLowerCase()}`);
-      team[i].dex = pokemon.id;
-      team[i].spriteUrl = pokemon.sprites.front_default;
-      team[i].type = [];
-      team[i].itemUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${team[i].item.toLowerCase().replace(' ', '-')}.png`;
+    // /*create tasks variable from team object to easily pass to a promsie.all()
+    // this *should* significantly increase the speed of processing for the 
+    // team submission part of the application which currently takes
+    // bloody ages to finish (like 8 to 10s)*/
+    // const tasks = team.map(pokemon => pokemon.name.toLowerCase())
 
-      for (var j in team[i].moves) {
-        const moves = await P.getMoveByName(team[i].moves[j].toLowerCase().replace(' ', '-'));//fetch(`https://pokeapi.co/api/v2/move/${team[i].moves[j].toLowerCase().replace(' ', '-')}/`)
+    // const pokemon = await P.getPokemonByName(tasks)
 
-        team[i].moves[j] = {
-          name: team[i].moves[j],
-          type: moves.type.name,
-          priority: moves.priority
-        }
-      }
+    // console.log(pokemon)
 
-      for (var t in pokemon.types) {
+    
+    // for (var i in team) {
+      // const pokemon = await P.getPokemonByName(team[i].name.toLowerCase()); //fetch(`https://pokeapi.co/api/v2/pokemon/${team[i].name.toLowerCase()}`);
+      // team[i].dex = pokemon.id;
+      // team[i].spriteUrl = pokemon.sprites.front_default;
+      // team[i].type = [];
+      // team[i].itemUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${team[i].item.toLowerCase().replace(' ', '-')}.png`;
 
-        team[i].type.push(pokemon.types[t].type.name);
-      }
+      // for (var j in team[i].moves) {
+      //   const moves = await P.getMoveByName(team[i].moves[j].toLowerCase().replace(' ', '-'));//fetch(`https://pokeapi.co/api/v2/move/${team[i].moves[j].toLowerCase().replace(' ', '-')}/`)
 
-    };
+      //   team[i].moves[j] = {
+      //     name: team[i].moves[j],
+      //     type: moves.type.name,
+      //     priority: moves.priority
+      //   }
+      // }
+
+      // for (var t in pokemon.types) {
+
+      //   team[i].type.push(pokemon.types[t].type.name);
+      // }
+
+    // };
     const tranche = gen.value + tier.value;
-    await statStore.setCurrent(tranche);
-    await statStore.setPrevious(tranche);
-    await statStore.setOlder(tranche);
+    // await statStore.setCurrent(tranche);
+    // await statStore.setPrevious(tranche);
+    // await statStore.setOlder(tranche);
 
 
     teamStore.updateTeam(team);
+    // console.log(teamStore.team)
   }
 }
 
