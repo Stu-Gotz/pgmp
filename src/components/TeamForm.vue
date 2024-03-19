@@ -66,7 +66,7 @@ const gens = ["gen1", "gen2", "gen3", "gen4", "gen5", "gen6", "gen7", "gen8", "g
 
 // Reactive variables from the form, which will be used to query the database to populate
 // the other half of the page
-const state = ref(null);
+const userInput = ref(null);
 const tier = ref("");
 const gen = ref("");
 const teamName = ref("");
@@ -77,7 +77,7 @@ const teamStore = useTeamStore();
 const statStore = useStatStore();
 
 onMounted(() => {
-  state.value = "";
+  userInput.value = "";
   tier.value = "";
   gen.value = "";
 });
@@ -89,7 +89,7 @@ async function submitForm() {
   console.log(errors.value);
   errors.value = [];
   console.log(errors.value);
-  if (state.value === null) {
+  if (userInput.value === null) {
     errors.value.push("Please paste a team into the area below.");
     console.log(errors.value);
   } else if (gen.value === "") {
@@ -100,17 +100,29 @@ async function submitForm() {
     console.log(errors.value);
   } else {
 
-    const team = teamStore.parseInput(state.value);
+    const team = await teamStore.parseInput(userInput.value);
+
+    const tranche = gen.value + tier.value;
+    // await statStore.setCurrent(tranche);
+    // await statStore.setPrevious(tranche);
+    // await statStore.setOlder(tranche);
+    teamStore.updateTeam(team);
+
+    /**
+     * 
+     * This is old code, but is kept here because I needed to make it better and abstract it away
+     * i realise having a huge chunk of old code is very untidy, but such is life
+     
     // console.log(team)
-    // const teamIn = Koffing.parse(state.value);
+    // const teamIn = Koffing.parse(userInput.value);
     // const team = teamIn.teams[0].pokemon;
 
     // // console.log(team)
 
-    // /*create tasks variable from team object to easily pass to a promsie.all()
+    // create tasks variable from team object to easily pass to a promsie.all()
     // this *should* significantly increase the speed of processing for the 
     // team submission part of the application which currently takes
-    // bloody ages to finish (like 8 to 10s)*/
+    // bloody ages to finish (like 8 to 10s)
     // const tasks = team.map(pokemon => pokemon.name.toLowerCase())
 
     // const pokemon = await P.getPokemonByName(tasks)
@@ -141,18 +153,16 @@ async function submitForm() {
     // }
 
     // };
-    const tranche = gen.value + tier.value;
-    // await statStore.setCurrent(tranche);
-    // await statStore.setPrevious(tranche);
-    // await statStore.setOlder(tranche);
 
-    teamStore.updateTeam(team);
-    // console.log(teamStore.team)
+   
+     * END OLD CODE
+     */
+
   }
 }
 
 function clearForm() {
-  state.value = "";
+  userInput.value = "";
   teamStore.$reset();
 }
 </script>
@@ -175,7 +185,7 @@ function clearForm() {
     </select>
     <label class="form-label" for="teamPasteArea">Please paste your Showdown output below: </label>
     <textarea class="form-control pastearea d-flex flex-column h-100 flex-grow-1" placeholder="" name="teamPasteArea"
-      id="teamPasteArea" v-model="state">
+      id="teamPasteArea" v-model="userInput">
     </textarea>
     <div class="d-flex align-items-center justify-content-around">
       <button @click="submitForm()" type="button" class="btn btn-success form-control w-25">Submit</button>

@@ -25,7 +25,7 @@ Naive Nature
 - Blizzard  
 - Aqua Jet  
 
-Bulbasaur @ Mago Berry  
+Cyndaquil @ Mago Berry  
 Ability: Blaze  
 EVs: 252 HP / 252 Atk / 4 SpA  
 Lonely Nature  
