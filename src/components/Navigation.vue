@@ -47,7 +47,7 @@ userStore.$subscribe((mutation, state) => {return}, { detached: true })
               Other Pages
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Profile</a></li>
+              <li><RouterLink class="nav-link active" to="/profile"></RouterLink></li>
               <li>
                 <hr class="dropdown-divider">
               </li>
